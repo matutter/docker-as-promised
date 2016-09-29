@@ -1,0 +1,30 @@
+{
+  "name": "docker-as-promised",
+  "version": "1.0.0",
+  "description": "Docker remote API wrapped in blurbird promises ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/matutter/docker-as-promised.git"
+  },
+  "keywords": [
+    "docker",
+    "remote",
+    "api",
+    "promise",
+    "bluebird"
+  ],
+  "author": "matutter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/matutter/docker-as-promised/issues"
+  },
+  "homepage": "https://github.com/matutter/docker-as-promised#readme",
+  "dependencies": {
+    "bluebird": "^3.4.6",
+    "request": "^2.75.0"
+  }
+}

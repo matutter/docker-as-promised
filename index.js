@@ -9,11 +9,6 @@ const clients = require('./lib/clients')
 var engine = new clients.DockerEngine({socket: '/var/run/docker.sock'})
 var registry = new clients.DockerRegistry({host: 'localhost', port: 5000})
 
-/*engine.imagePush('localhost:5000/alpine').then( images => {
-  console.log(' > ', images)
-})
-.catch(console.error.bind(console))*/
-
 registry.versionCheck().then( version => 
   registry.catalog().then(catalog => 
     Promise.map(catalog.repositories, repo => 

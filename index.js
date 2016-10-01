@@ -1,6 +1,5 @@
 const Promise = require('bluebird')
 const request = require('request')
-const Uri = require('./uri.js')
 
 const clients = require('./lib/clients')
 
@@ -8,8 +7,25 @@ const clients = require('./lib/clients')
     //uri: 'http://unix:/var/run/docker.sock:/images/json',
 
 var engine = new clients.DockerEngine({socket: '/var/run/docker.sock'})
+var registry = new clients.DockerRegistry({host: 'localhost', port: 5000})
 
-engine.images().then( images => {
+/*engine.imagePush('localhost:5000/alpine').then( images => {
   console.log(' > ', images)
 })
-.catch(console.error.bind(console))
+.catch(console.error.bind(console))*/
+
+registry.versionCheck().then( version => 
+  registry.catalog().then(catalog => 
+    Promise.map(catalog.repositories, repo => 
+      registry.tags(repo).then(tags => Promise.map(tags, tag => 
+        registry.manifestRef(repo, tag).then( manifest => {
+          return registry.delete(repo, manifest.digest).then(() => {
+            return Promise.map(manifest.layers, layer => registry.deleteBlob(repo, layer.digest))
+          })
+        })
+      ))
+    )
+  )
+)
+.catch(e => console.log(e.data || e))
+

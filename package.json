@@ -4,7 +4,9 @@
   "description": "Docker remote API wrapped in blurbird promises ",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha ./test --recursive",
+    "test-no-colors": "mocha ./test --recursive --no-colors",
+    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js"
   },
   "repository": {
     "type": "git",
@@ -25,6 +27,13 @@
   "homepage": "https://github.com/matutter/docker-as-promised#readme",
   "dependencies": {
     "bluebird": "^3.4.6",
-    "request": "^2.75.0"
+    "request": "^2.75.0",
+    "validator": "^6.0.0"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coveralls": "^2.11.14",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.1.0"
   }
 }

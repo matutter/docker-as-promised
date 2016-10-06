@@ -1,12 +1,13 @@
 {
   "name": "docker-as-promised",
   "version": "1.0.0",
-  "description": "Docker remote API wrapped in blurbird promises ",
+  "description": "Docker Engine 1.24 & Registry v2 remote API wrapped in bluebird promises",
   "main": "index.js",
   "scripts": {
-    "test": "mocha ./test --recursive",
+    "test": "mocha --slow 0 ./test/test.js",
     "test-no-colors": "mocha ./test --recursive --no-colors",
-    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js"
+    "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js",
+    "active-developer": "nodemon --exec \"npm test\""
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
     "coveralls": "^2.11.14",
     "istanbul": "^0.4.5",
     "mocha": "^3.1.0"

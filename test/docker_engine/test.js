@@ -4,7 +4,9 @@ const socket = '/var/run/docker.sock'
 var engine = new DockerEngine()
 
 global.engine = {
-  socket: '/var/run/docker.sock'
+  socket: '/var/run/docker.sock',
+  version: '1.24',
+  instance: engine
 }
 
 describe(`DockerEngine`, () => {

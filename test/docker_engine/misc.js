@@ -1,6 +1,8 @@
 
 //const DockerEngine = require('../../lib/clients/DockerEngine.js')
 const validates = require('../../lib/validation').engine
+const version = global.engine.version
+const engine = global.engine.instance
 
 describe('query-string & body sanitization removes excess properties', () => {
 
@@ -72,10 +74,16 @@ describe('query-string & body validation throws errors on invalid types', ()=> {
     })
   }
 })
-/*
-describe('', () => {
 
+describe('version', () => {
+  it(`should be ${version}`, () => {
+    return engine.version().then(info => {
+      assert.equal(info.ApiVersion, version, `API version mismatch | expected ${version}, found ${info.ApiVersion}`)
+    }).should.be.fulfilled
+  })
 })
+
+/*
 
     it(`should throw a TypeError with incorrect qs value types`, () => {
       return engine.listContainers({limit:'NaN'}).should.be.rejectedWith(TypeError)

@@ -1,7 +1,6 @@
 
 //const DockerEngine = require('../../lib/clients/DockerEngine.js')
 const validates = require('../../lib/validation').engine
-const version = global.engine.version
 const engine = global.engine.instance
 
 describe('query-string & body sanitization removes excess properties', () => {
@@ -18,7 +17,10 @@ describe('query-string & body sanitization removes excess properties', () => {
     create_container_name : { name: 'name' },
     create_container_body : { Image: '/name' },
     inspect_container : { size: 1 },
-    remove_container : { v : 'True', force : false }
+    remove_container : { v : 'True', force : false },
+    top_container : { ps_args: 'aux' },
+    start_container : { detachKeys: 'ctrl-a' },
+    stop_container : { t: 0 }
   }
 
   const valid_input = {
@@ -33,7 +35,10 @@ describe('query-string & body sanitization removes excess properties', () => {
     create_container_name : { name: 'name' },
     create_container_body : { Image: '/name' },
     inspect_container : { size: 1 },
-    remove_container : { v : 'True', force : false }
+    remove_container : { v : 'True', force : false },
+    top_container : { ps_args: 'aux' },
+    start_container : { detachKeys: 'ctrl-a' },
+    stop_container : { t: 0 }
   }
 
   for(key in validates) {
@@ -61,7 +66,10 @@ describe('query-string & body validation throws errors on invalid types', ()=> {
     create_container_name : { name: '123 unexpected/name' },
     create_container_body : { Image: 'xxx malformed/name' },
     inspect_container : { size: 'something else' },
-    remove_container : { v : 'True+False', force : {} }
+    remove_container : { v : 'True+False', force : {} },
+    top_container : { ps_args: '--width 0xxx xxx'},
+    start_container : { detachKeys: 'xxx' },
+    stop_container : { t: 'x' }
   }
 
   for(key in validates) {
@@ -69,42 +77,8 @@ describe('query-string & body validation throws errors on invalid types', ()=> {
     const input = invalid_input[key]
 
     assert(typeof validator === 'function', `validator ${key} not a function. (actual type ${typeof validator})`)
-    it(`should sanitize engine.${key}`, () => {
+    it(`should validate engine.${key}`, () => {
       validator(input).should.be.rejected
     })
   }
 })
-
-describe('version', () => {
-  it(`should be ${version}`, () => {
-    return engine.version().then(info => {
-      assert.equal(info.ApiVersion, version, `API version mismatch | expected ${version}, found ${info.ApiVersion}`)
-    }).should.be.fulfilled
-  })
-})
-
-/*
-
-    it(`should throw a TypeError with incorrect qs value types`, () => {
-      return engine.listContainers({limit:'NaN'}).should.be.rejectedWith(TypeError)
-    })
-
-describe('', () => {})
-
-    describe('validators help prevent malformed queries', () => {
-      
-      describe('engine.listContainers', () => {
-        it('validates all, limit, since, before, size, ', () => {
-          return engine.listContainers({limit: 1, all: '0', size: true, since : 'sha256:0123456789ABCDEF'}).should.be.fulfilled
-        })
-      })
-
-      describe('engine.ping', () => {
-        it('has no parameters', () => {
-          return engine.ping().should.be.fulfilled
-        })
-      })
-
-    })
-
-    */

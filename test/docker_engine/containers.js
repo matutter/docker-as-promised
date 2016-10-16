@@ -3,11 +3,12 @@ const DockerEngine = require('../../lib/clients/DockerEngine.js')
 const engine = new DockerEngine()
 
 const test_name = 'dap_test_container'
-const test_image = 'hello-world'
+const test_image = 'alpine'
+const test_command = 'tail -f /dev/null'.split(' ')
 
 describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
 
-  /*before('delete the container if it exists', () => {
+  before('delete the container if it exists', () => {
     return engine.removeContainer(test_name, {force:1})
       .catch(e => {
         if(e.statusCode != 404)
@@ -16,15 +17,65 @@ describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
   })
 
   it(`should create a container named ${test_name} from ${test_image}`, () => {
-    return engine.createContainer(test_name, {Image: test_image}).then(res => {
+    return engine.createContainer(test_name, {Image: test_image, Cmd: test_command}).then(res => {
       assert(res.Id, 'response has no Id')
-      assert(res.Warnings.length == 0, `response has Warnings [${res.Warnings.join(',')}]`)
-      console.log(res)
+      assert(!res.Warnings, `response has Warnings [${res.Warnings}]`)
     }).catch(e => {
       console.log(e.content)
       throw e
     }).should.be.fulfilled
-  })*/
+  })
+})
+
+describe(`startContainer ${test_name}`, () => {
+  it(`should start the container named ${test_name}`, () => {
+    return engine.startContainer(test_name).should.be.fulfilled
+  })
+})
+
+describe('listContainers filter { status: running }', () => {
+  it('should list all running containers', () => {
+    return engine.listContainers({filter: {status:'running'}}).then(list => {
+      //console.log(list)
+    }).should.be.fulfilled
+  })
+})
+
+describe(`inpectContainer ${test_name}`, () => {
+  it('should return low level info object', () => {
+    return engine.inspectContainer(test_name).then(info => {
+      assert.equal(info.Name, `/${test_name}`)
+      assert(info.State.Running, 'Last test should START the container, but it was not running')
+    }).should.be.fulfilled
+  })
+})
+
+describe(`stopContainer ${test_name} t:0`, () => {
+  it(`should stop the container named ${test_name}`, () => {
+    return engine.stopContainer(test_name, {t:0}).should.be.fulfilled
+  })
+})
+
+describe(`inpectContainer ${test_name} size:1`, () => {
+
+  before('wait for latency', () => wait(1000))
+
+  it('should return low level info object with size data', () => {
+    return engine.inspectContainer(test_name, {size:1}).then(info => {
+      assert.isNumber(info.SizeRw)
+      assert.isNumber(info.SizeRootFs)
+      assert(!info.State.Running, 'Last test should STOP the container, but it was not running')
+    }).should.be.fulfilled;
+  })
+})
+
+describe(`removeContainer ${test_name} v:1 `, () => {
+
+  before('wait for latency', () => wait(1000))
+
+  it(`should remove the container named ${test_name} & volumes`, () => {
+    return engine.removeContainer(test_name, {v:1}).should.be.fulfilled;
+  })
 })
 
 describe('listContainers limit:2', () => {

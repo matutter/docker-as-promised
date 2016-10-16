@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/matutter/docker-as-promised.svg?branch=master)](https://travis-ci.org/matutter/docker-as-promised) 
+
 # docker-as-promised
 Docker as promised provides promissory style clients for both the Docker Registry & Engine remote API.
 

@@ -7,7 +7,7 @@ const test_image = 'hello-world'
 
 describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
 
-  before('delete the container if it exists', () => {
+  /*before('delete the container if it exists', () => {
     return engine.removeContainer(test_name, {force:1})
       .catch(e => {
         if(e.statusCode != 404)
@@ -20,8 +20,11 @@ describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
       assert(res.Id, 'response has no Id')
       assert(res.Warnings.length == 0, `response has Warnings [${res.Warnings.join(',')}]`)
       console.log(res)
+    }).catch(e => {
+      console.log(e.content)
+      throw e
     }).should.be.fulfilled
-  })
+  })*/
 })
 
 describe('listContainers limit:2', () => {

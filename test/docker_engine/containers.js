@@ -3,9 +3,18 @@ const DockerEngine = require('../../lib/clients/DockerEngine.js')
 const engine = new DockerEngine()
 
 const test_name = 'dap_test_container'
-const test_image = 'alpine'
+const test_image = 'hello-world'
 
 describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
+
+  before('delete the container if it exists', () => {
+    return engine.removeContainer(test_name, {force:1})
+      .catch(e => {
+        if(e.statusCode != 404)
+          throw e
+      }).should.be.fulfilled
+  })
+
   it(`should create a container named ${test_name} from ${test_image}`, () => {
     return engine.createContainer(test_name, {Image: test_image}).then(res => {
       assert(res.Id, 'response has no Id')

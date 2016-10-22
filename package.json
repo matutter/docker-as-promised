@@ -4,7 +4,7 @@
   "description": "Docker Engine 1.24 & Registry v2 remote API wrapped in bluebird promises",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --slow 0 ./test/test.js",
+    "test": "mocha --slow 0 --bail ./test/test.js",
     "test-no-colors": "mocha ./test --recursive --no-colors",
     "test-w-coverage": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./test/test.js",
     "active-developer": "nodemon --exec \"npm test\""
@@ -28,6 +28,7 @@
   "homepage": "https://github.com/matutter/docker-as-promised#readme",
   "dependencies": {
     "bluebird": "^3.4.6",
+    "json-stream": "^1.0.0",
     "request": "^2.75.0",
     "validator": "^6.0.0"
   },

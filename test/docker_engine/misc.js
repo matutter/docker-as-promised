@@ -20,7 +20,8 @@ describe('query-string & body sanitization removes excess properties', () => {
     remove_container : { v : 'True', force : false },
     top_container : { ps_args: 'aux' },
     start_container : { detachKeys: 'ctrl-a' },
-    stop_container : { t: 0 }
+    stop_container : { t: 0 },
+    create_image : { fromImage: 'alpine' }
   }
 
   const valid_input = {
@@ -38,7 +39,8 @@ describe('query-string & body sanitization removes excess properties', () => {
     remove_container : { v : 'True', force : false },
     top_container : { ps_args: 'aux' },
     start_container : { detachKeys: 'ctrl-a' },
-    stop_container : { t: 0 }
+    stop_container : { t: 0 },
+    create_image : { fromImage: 'alpine' }
   }
 
   for(key in validates) {
@@ -69,7 +71,8 @@ describe('query-string & body validation throws errors on invalid types', ()=> {
     remove_container : { v : 'True+False', force : {} },
     top_container : { ps_args: '--width 0xxx xxx'},
     start_container : { detachKeys: 'xxx' },
-    stop_container : { t: 'x' }
+    stop_container : { t: 'x' },
+    create_image : { fromImage: 123 }
   }
 
   for(key in validates) {

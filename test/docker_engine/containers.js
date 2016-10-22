@@ -1,6 +1,5 @@
 
-const DockerEngine = require('../../lib/clients/DockerEngine.js')
-const engine = new DockerEngine()
+const engine = global.engine.instance || (new require('../../lib/clients/DockerEngine.js'))
 
 const test_name = 'dap_test_container'
 const test_image = 'alpine'
@@ -21,7 +20,6 @@ describe(`createContainer name:${test_name} Image:${test_image}`, ()=> {
       assert(res.Id, 'response has no Id')
       assert(!res.Warnings, `response has Warnings [${res.Warnings}]`)
     }).catch(e => {
-      console.log(e.content)
       throw e
     }).should.be.fulfilled
   })

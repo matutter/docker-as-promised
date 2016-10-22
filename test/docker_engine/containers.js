@@ -67,15 +67,6 @@ describe(`inpectContainer ${test_name} size:1`, () => {
   })
 })
 
-describe(`removeContainer ${test_name} v:1 `, () => {
-
-  before('wait for latency', () => wait(1000))
-
-  it(`should remove the container named ${test_name} & volumes`, () => {
-    return engine.removeContainer(test_name, {v:1}).should.be.fulfilled;
-  })
-})
-
 describe('listContainers limit:2', () => {
   it('should list containers', () => {
     return engine.listContainers({limit: 2}).then(list => {
@@ -84,5 +75,14 @@ describe('listContainers limit:2', () => {
       // every container has an ID
       assert(list.every(container => container.Id))
     }).should.be.fulfilled
+  })
+})
+
+describe(`removeContainer ${test_name} v:1 `, () => {
+
+  before('wait for latency', () => wait(1000))
+
+  it(`should remove the container named ${test_name} & volumes`, () => {
+    return engine.removeContainer(test_name, {v:1}).should.be.fulfilled;
   })
 })

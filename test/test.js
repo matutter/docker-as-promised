@@ -18,5 +18,9 @@ global.wait = wait = function(ms) {
   })
 }
 
+//describe('JSONStream', () => {
+  //require('./json_stream/json_stream.js')
+//})
+
 //require('./docker_engine/validators.js')
 require('./docker_engine/test.js')

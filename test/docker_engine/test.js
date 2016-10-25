@@ -1,5 +1,5 @@
 
-const DockerEngine = require('../../lib/clients/DockerEngine.js')
+const DockerEngine = require('../../lib/clients/engine')
 const socket = '/var/run/docker.sock'
 const engine = new DockerEngine()
 const target_ver = '1.24'
@@ -63,6 +63,7 @@ describe(`DockerEngine`, () => {
   */
   if(containers) describe('3.1 containers', () => {
     require('./containers.js')
+    require('./containers_2.js')
   })
 
 })

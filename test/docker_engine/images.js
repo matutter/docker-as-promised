@@ -1,15 +1,15 @@
 const engine = global.engine.instance || (new require('../../lib/clients/DockerEngine.js'))
 
 const required_images = [
-  { image: 'alpine' },
-  { image: 'registry' },
-  { image: 'hello-world' }
+  { name: 'alpine' },
+  { name: 'registry' },
+  { name: 'hello-world' }
 ]
 
 describe('createImage ...', () => {
   required_images.forEach(required => {
 
-    var image = required.image
+    var image = required.name
     var tag = required.tag || 'latest'
 
     describe(`createImage fromImage:${image} tag:${tag} stream_cb`, () => {
@@ -23,7 +23,7 @@ describe('createImage ...', () => {
           if(data.status) status++
         }
 
-        return engine.createImage({fromImage: image, tag:tag}, onProgress)
+        return engine.images.create({fromImage: image, tag:tag}, onProgress)
           .then(result => {
             assert(result === null, 'createImage produced a non-null result: ' + result)
             assert(status > 0, 'createImage observed 0 status objects')
@@ -33,6 +33,21 @@ describe('createImage ...', () => {
             throw e
           }).should.be.fulfilled
       })
+    })
+  })
+})
+
+describe(`inspectImage ...`, () => {
+
+  var image = required_images[0]
+  var name = image.name
+  var expected_tag = `${name}:${image.tag || 'latest'}`
+
+  describe(`engine.inspectImage(${name})`, () => {
+    it(`should return image information for ${name}`, () => {
+      return engine.images.inspect(name).then(info => {
+        assert(~info.RepoTags.indexOf(expected_tag), `Expected tag "${expected_tag}" not in image ${name}`)
+      }).should.be.fulfilled
     })
   })
 })

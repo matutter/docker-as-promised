@@ -1,5 +1,5 @@
 
-const DockerEngine = require('../../lib/clients/DockerEngine.js')
+const DockerEngine = require('../../lib/clients/engine')
 const socket = global.engine.socket
 
 describe(`new DockerEngine defaults`, () => {

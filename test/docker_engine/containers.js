@@ -67,7 +67,6 @@ describe(`containers.stats ${test_name} Function(data, stream)`, function() {
   it('should a system resources stats stream', () => {
     var count = 3
     return engine.containers.stats(test_name, (data, stream) => {
-      //console.log('streaming', count)
       count--
       if(count < 0) {
         stream.abort()
